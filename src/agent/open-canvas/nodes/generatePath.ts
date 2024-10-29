@@ -15,7 +15,8 @@ import { getArtifactContent } from "../../../hooks/use-graph/utils";
  * Routes to the proper node in the graph based on the user's query.
  */
 export const generatePath = async (
-  state: typeof OpenCanvasGraphAnnotation.State
+  state: typeof OpenCanvasGraphAnnotation.State,
+  config: LangGraphRunnableConfig
 ) => {
   if (state.highlightedCode) {
     return {
@@ -90,7 +91,8 @@ export const generatePath = async (
 
   const modelWithTool = new ChatOpenAI({
     model: "gpt-4o-mini",
-    temperature: 0,
+    temperature: config.configurable?.temperature ?? 0,
+    maxTokens: config.configurable?.maxTokens ?? 250,
   }).withStructuredOutput(
     z.object({
       route: z

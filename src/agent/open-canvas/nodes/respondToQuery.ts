@@ -19,7 +19,8 @@ export const respondToQuery = async (
 ): Promise<OpenCanvasGraphReturnType> => {
   const smallModel = new ChatOpenAI({
     model: "gpt-4o-mini",
-    temperature: 0.5,
+    temperature: config.configurable?.temperature ?? 0.5,
+    maxTokens: config.configurable?.maxTokens ?? 250,
   });
 
   const prompt = `You are an AI assistant tasked with responding to the users question.

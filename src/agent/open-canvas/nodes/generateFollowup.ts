@@ -16,8 +16,8 @@ export const generateFollowup = async (
 ): Promise<OpenCanvasGraphReturnType> => {
   const smallModel = new ChatOpenAI({
     model: "gpt-4o-mini",
-    temperature: 0.5,
-    maxTokens: 250,
+    temperature: config.configurable?.temperature ?? 0.5,
+    maxTokens: config.configurable?.maxTokens ?? 250,
   });
 
   const store = ensureStoreInConfig(config);

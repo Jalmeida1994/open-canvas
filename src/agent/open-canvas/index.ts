@@ -12,6 +12,7 @@ import { reflectNode } from "./nodes/reflect";
 import { customAction } from "./nodes/customAction";
 import { updateHighlightedText } from "./nodes/updateHighlightedText";
 import { DEFAULT_INPUTS } from "../../constants";
+import { Slider } from "../../components/ui/slider";
 
 const routeNode = (state: typeof OpenCanvasGraphAnnotation.State) => {
   if (!state.next) {
@@ -72,3 +73,44 @@ const builder = new StateGraph(OpenCanvasGraphAnnotation)
   .addEdge("cleanState", END);
 
 export const graph = builder.compile().withConfig({ runName: "open_canvas" });
+
+const Settings = () => {
+  return (
+    <div>
+      <div>
+        <label htmlFor="temperature-slider">Temperature</label>
+        <Slider
+          id="temperature-slider"
+          min={0}
+          max={2}
+          step={0.1}
+          defaultValue={1}
+          aria-label="Temperature"
+        />
+        <p>
+          Temperature controls the randomness of the model's output. Lower
+          values make the output more deterministic, while higher values make it
+          more random.
+        </p>
+      </div>
+      <div>
+        <label htmlFor="max-tokens-slider">Max Tokens</label>
+        <Slider
+          id="max-tokens-slider"
+          min={1}
+          max={4096}
+          step={1}
+          defaultValue={1024}
+          aria-label="Max Tokens"
+        />
+        <p>
+          Max Tokens determines the maximum number of tokens the model can
+          generate in a single response. Adjust this based on the model's token
+          output range.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Settings;

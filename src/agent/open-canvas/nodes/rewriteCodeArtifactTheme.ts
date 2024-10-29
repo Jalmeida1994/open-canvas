@@ -11,11 +11,13 @@ import { isArtifactCodeContent } from "../../../lib/artifact_content_types";
 import { getArtifactContent } from "../../../hooks/use-graph/utils";
 
 export const rewriteCodeArtifactTheme = async (
-  state: typeof OpenCanvasGraphAnnotation.State
+  state: typeof OpenCanvasGraphAnnotation.State,
+  config: LangGraphRunnableConfig
 ): Promise<OpenCanvasGraphReturnType> => {
   const smallModel = new ChatOpenAI({
     model: "gpt-4o-mini",
-    temperature: 0.5,
+    temperature: config.configurable?.temperature ?? 0.5,
+    maxTokens: config.configurable?.maxTokens ?? 250,
   });
 
   const currentArtifactContent = state.artifact

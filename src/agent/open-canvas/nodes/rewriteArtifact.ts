@@ -31,7 +31,8 @@ export const rewriteArtifact = async (
 ): Promise<OpenCanvasGraphReturnType> => {
   const smallModel = new ChatOpenAI({
     model: "gpt-4o-mini",
-    temperature: 0.5,
+    temperature: config.configurable?.temperature ?? 0.5,
+    maxTokens: config.configurable?.maxTokens ?? 250,
   });
 
   const store = ensureStoreInConfig(config);
@@ -97,12 +98,12 @@ export const rewriteArtifact = async (
     ])
     .withConfig({ runName: "optionally_update_artifact_meta" });
 
-  const optionallyUpdateArtifactResponse =
+  const optionallyUpdateArtifactMetaResponse =
     await optionallyUpdateModelWithTool.invoke([
       { role: "system", content: optionallyUpdateArtifactMetaPrompt },
       recentHumanMessage,
     ]);
-  const artifactMetaToolCall = optionallyUpdateArtifactResponse.tool_calls?.[0];
+  const artifactMetaToolCall = optionallyUpdateArtifactMetaResponse.tool_calls?.[0];
   const artifactType = artifactMetaToolCall?.args?.type;
   const isNewType = artifactType !== currentArtifactContent.type;
 

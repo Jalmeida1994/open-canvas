@@ -27,11 +27,13 @@ Ensure you reply with the FULL text block, including the updated selected text. 
  * Update an existing artifact based on the user's query.
  */
 export const updateHighlightedText = async (
-  state: typeof OpenCanvasGraphAnnotation.State
+  state: typeof OpenCanvasGraphAnnotation.State,
+  config: LangGraphRunnableConfig
 ): Promise<OpenCanvasGraphReturnType> => {
   const model = new ChatOpenAI({
     model: "gpt-4o",
-    temperature: 0,
+    temperature: config.configurable?.temperature ?? 0.5,
+    maxTokens: config.configurable?.maxTokens ?? 250,
   }).withConfig({ runName: "update_highlighted_markdown" });
 
   const currentArtifactContent = state.artifact
